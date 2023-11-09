@@ -2,7 +2,7 @@ FROM ubuntu:22.04
 
 RUN apt -y update && apt -y upgrade
 
-RUN apt-get install -y vim python3 python3-pip ninja-build clang nasm
+RUN apt-get install -y vim python3 python3-pip ninja-build clang nasm git
 
 # rizin installation
 RUN pip3 install meson
