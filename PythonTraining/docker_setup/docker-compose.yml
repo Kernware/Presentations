@@ -1,0 +1,37 @@
+version: '3'
+
+services:
+  jupyterhub:
+    build:
+      context: .
+      dockerfile: Dockerfile.hub
+    container_name: jupyterhub
+    ports:
+      - "8002:8000"
+    volumes:
+      - ./jupyterhub_config.py:/srv/jupyterhub/jupyterhub_config.py
+      - jupyterhub-data:/data
+      - /var/run/docker.sock:/var/run/docker.sock 
+      - ./templates:/srv/jupyterhub/templates
+    networks:
+      - jupyterhub-network
+    environment:
+      DOCKER_NOTEBOOK_IMAGE: jupyterhub-user
+    restart: always
+    depends_on:
+      - user-image
+
+  user-image:
+    build:
+      context: .
+      dockerfile: Dockerfile.user
+    image: jupyterhub-user
+    networks:
+      - jupyterhub-network
+
+volumes:
+  jupyterhub-data:
+
+networks:
+  jupyterhub-network:
+    name: jupyterhub-network
