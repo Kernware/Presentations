@@ -23,8 +23,8 @@ services:
 
   user-image:
     build:
-      context: .
-      dockerfile: Dockerfile.user
+      context: ..
+      dockerfile: docker_setup/Dockerfile.user
     image: jupyterhub-user
     networks:
       - jupyterhub-network
