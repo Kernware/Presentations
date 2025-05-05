@@ -1,10 +1,13 @@
 import argparse
+import asyncio
 import os
 import uvicorn
 import turtle
 
 from fastapi import APIRouter, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+
+lock = asyncio.Lock()
 
 app = FastAPI()
 router = APIRouter()
@@ -21,6 +24,13 @@ screen.title("Turtle Commander")
 t = turtle.Turtle()
 t.speed(1)
 
+commands = {
+    "pendown": t.pendown,
+    "penup": t.penup,
+    "move": t.forward,
+    "left": t.left,
+    "right": t.right
+}
 
 @app.get("/command/")
 async def command(command: str):
@@ -30,23 +40,25 @@ async def command(command: str):
         parts = command.split()
         action = parts[0]
 
-        if action == "move" and len(parts) == 2:
-            distance = int(parts[1])
-            t.forward(distance)
-        elif action == "left" and len(parts) == 2:
-            angle = int(parts[1])
-            t.left(angle)
-        elif action == "right" and len(parts) == 2:
-            angle = int(parts[1])
-            t.right(angle)
-        elif action == "penup":
-            t.penup()
-        elif action == "pendown":
-            t.pendown()
-        else:
-            pass # invalid command
-    except:
-        pass # invalid format
+        if action in ["penup", "pendown"]:
+            async with lock:
+                commands[action]()
+            return
+
+        if len(parts) != 2:
+            print("Invalid number of arguments: " + command)
+            return
+
+        value = int(parts[1])
+
+        if action in ["move", "left", "right"]:
+            async with lock:
+                commands[action](value)
+            return
+
+        print("Invalid Command: " + command)
+    except Exception as e:
+        print("ERROR Command: " + str(e))
 
 
 if __name__ == "__main__":
