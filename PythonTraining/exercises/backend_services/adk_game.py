@@ -8,9 +8,9 @@ import time
 
 
 player_commands = {
-        "red": "none",
-        "green": "none",
-        "blue": "none"
+    "red": "none",
+    "green": "none",
+    "blue": "none"
 }
 command_lock = threading.Lock()
 
@@ -19,6 +19,8 @@ app = FastAPI()
 
 @app.get("/command")
 def set_command(name: str, action: str):
+    print(f"command, name: {name}, action: {action}")
+
     if name not in player_commands:
         return {"error": f"Unknown player {name}"}
     if action not in ["left", "right", "none"]:
@@ -36,7 +38,7 @@ class Player:
         self.color = color
         self.x, self.y = start_pos
         self.angle = angle  # in degrees
-        self.speed = 3
+        self.speed = 3.5
         self.alive = True
         self.trail = []
 
@@ -63,7 +65,7 @@ class Player:
 # Game constants
 WIDTH, HEIGHT = 800, 600
 BG_COLOR = (0, 0, 0)
-FPS = 60
+FPS = 30
 
 # Main game function
 def run_game():
@@ -82,15 +84,12 @@ def run_game():
     trail_surface = pygame.Surface((WIDTH, HEIGHT))
     trail_surface.fill(BG_COLOR)
 
-    """
     for count in range(5, 0, -1):
         screen.fill(BG_COLOR)
         text = font.render(str(count), True, (255, 255, 255))
         screen.blit(text, (WIDTH // 2 - text.get_width() // 2, HEIGHT // 2 - text.get_height() // 2))
         pygame.display.flip()
         time.sleep(1)
-    """
-    
 
     running = True
     while running:
@@ -111,31 +110,25 @@ def run_game():
             player.move()
             x, y = player.get_position()
 
-            # Collision with walls
             if x < 0 or x >= WIDTH or y < 0 or y >= HEIGHT:
                 print(f"Player {player.name}, collided with walls!")
                 player.alive = False
                 continue
 
-            # Collision with trails
             if trail_surface.get_at((x, y)) != BG_COLOR:
                 print(f"Player {player.name}, collided with trail! ({x}, {y})")
                 player.alive = False
                 continue
 
-            # Draw on trail surface
             pygame.draw.circle(trail_surface, player.color, (x, y), 2)
 
-        # Draw updated screen
         screen.blit(trail_surface, (0, 0))
         pygame.display.flip()
         clock.tick(FPS)
 
     pygame.quit()
 
-# Start FastAPI in background thread
 api_thread = threading.Thread(target=run_fastapi, daemon=True)
 api_thread.start()
 
-# Run game (blocking)
 run_game()
