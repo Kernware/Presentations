@@ -50,7 +50,6 @@ async def command(command: str):
             return
 
         value = int(parts[1])
-
         if action in ["move", "left", "right"]:
             async with lock:
                 commands[action](value)
