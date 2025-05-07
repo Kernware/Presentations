@@ -6,3 +6,4 @@ COPY ../exercises/introduction.ipynb /home/jovyan/
 COPY ../exercises/starter_challenges.ipynb /home/jovyan/
 COPY ../exercises/turtle_exercise.ipynb /home/jovyan/
 COPY ../exercises/temperature_sensor.ipynb /home/jovyan/
+COPY ../exercises/adk_exercise.ipynb /home/jovyan/

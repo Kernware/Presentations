@@ -53,7 +53,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description="FastAPI backend for mobile teststation."
     )
-    parser.add_argument("-p", "--port", default=8004)
+    parser.add_argument("-p", "--port", default=9004)
     args = parser.parse_args()
 
     if "BACKEND_TARGET" in os.environ:
