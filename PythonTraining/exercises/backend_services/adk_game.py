@@ -67,7 +67,6 @@ WIDTH, HEIGHT = 800, 600
 BG_COLOR = (0, 0, 0)
 FPS = 30
 
-# Main game function
 def run_game():
     pygame.init()
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
