@@ -62,7 +62,7 @@ async def command(command: str):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("-p", "--port", default=8002)
+    parser.add_argument("-p", "--port", default=9005)
     args = parser.parse_args()
 
     if "TURTLE_BACKEND_TARGET" in os.environ:

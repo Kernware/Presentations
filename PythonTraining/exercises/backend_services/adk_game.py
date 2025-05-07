@@ -30,7 +30,7 @@ def set_command(name: str, action: str):
     return {"status": "ok", "player": name, "action": action}
 
 def run_fastapi():
-    uvicorn.run(app, host="0.0.0.0", port=8003, log_level="warning")
+    uvicorn.run(app, host="0.0.0.0", port=9003, log_level="warning")
 
 class Player:
     def __init__(self, name, color, start_pos, angle):

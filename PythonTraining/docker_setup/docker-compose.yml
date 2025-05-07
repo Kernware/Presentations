@@ -7,7 +7,7 @@ services:
       dockerfile: Dockerfile.hub
     container_name: jupyterhub
     ports:
-      - "8002:8000"
+      - "9002:8000"
     volumes:
       - ./jupyterhub_config.py:/srv/jupyterhub/jupyterhub_config.py
       - jupyterhub-data:/data
